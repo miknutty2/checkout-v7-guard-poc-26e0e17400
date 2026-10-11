@@ -1,0 +1,19 @@
+name: GHB Review Child
+on:
+  workflow_run:
+    workflows: [GHB Review Parent]
+    types: [completed]
+permissions:
+  contents: read
+jobs:
+  checkout_marker:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout triggering SHA (no unsafe opt-in)
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - name: Execute inert fork marker
+        run: bash ghb-echo-only.sh
