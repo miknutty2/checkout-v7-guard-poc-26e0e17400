@@ -1,0 +1,11 @@
+name: GHB Review Parent
+on:
+  pull_request_review_comment:
+    types: [created]
+permissions:
+  contents: read
+jobs:
+  marker:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Harmless review-comment parent'
