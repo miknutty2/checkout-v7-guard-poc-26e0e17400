@@ -1,0 +1,17 @@
+name: GHB Review Direct Control
+on:
+  pull_request_target:
+    types: [reopened]
+permissions:
+  contents: read
+jobs:
+  direct_control:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attempt same fork SHA (no unsafe opt-in)
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Should not execute
+        run: bash ghb-echo-only.sh
